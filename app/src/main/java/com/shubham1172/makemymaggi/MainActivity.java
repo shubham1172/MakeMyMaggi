@@ -69,17 +69,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_HOME_ACTIVITY) {
-            // coming from HomeActivity
-            Snackbar.make(findViewById(R.id.home_layout),
-                    "Signed out.",
-                    Snackbar.LENGTH_LONG).show();
-        } else if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN) {
             @SuppressLint("RestrictedApi") Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
+                displaySnack("Sign in failed.");
                 Log.e(TAG, "Google sign in failed: " + e.toString());
             }
         }
@@ -101,12 +97,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            Snackbar.make(findViewById(R.id.main_layout),
-                                    "Authentication Failed.",
-                                    Snackbar.LENGTH_LONG).show();
+                            displaySnack("Authentication failed");
                             updateUI(null);
                         }
                     }
                 });
+    }
+
+    private void displaySnack(String msg) {
+        Snackbar.make(findViewById(R.id.main_layout), msg, Snackbar.LENGTH_LONG).show();
     }
 }
