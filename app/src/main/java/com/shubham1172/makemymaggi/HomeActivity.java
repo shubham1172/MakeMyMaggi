@@ -29,8 +29,11 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String key = child.getKey().toString();
-                    String val = child.getValue().toString();
+                    String key = child.getKey();
+                    Object valObj = child.getValue();
+                    if (valObj == null)
+                        throw new NullPointerException();
+                    String val = valObj.toString();
                     if (key.equals("order"))
                         if (val.equals("0"))
                             makeButton.setClickable(true);
@@ -51,7 +54,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void makeMyMaggi(View view) {
-        /** update stuff */
+        // update stuff
         mData.getReference("order").setValue(1);
     }
 
