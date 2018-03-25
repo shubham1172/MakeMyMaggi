@@ -3,4 +3,6 @@
     <string name="sign_in_successful">Sign in successful!</string>
     <string name="sign_in_error">Sign in error!</string>
     <string name="sign_out">Sign out</string>
+    <string name="status">status:</string>
+    <string name="default_status">idle</string>
 </resources>
